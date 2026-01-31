@@ -196,7 +196,7 @@ const FooterBar = () => {
           </div>
 
           <div className='text-sm'>
-            <span className='!text-semi-color-text-1' style={{ visibility: hidden }}>
+            <span className='!text-semi-color-text-1' style={{ visibility: 'hidden' }}>
               {t('设计与开发由')}{' '}
             </span>
             <a
@@ -226,7 +226,7 @@ const FooterBar = () => {
             className='custom-footer'
             dangerouslySetInnerHTML={{ __html: footer }}
           ></div>
-          <div style={{visibility: hidden}} className='absolute bottom-2 right-4 text-xs !text-semi-color-text-2 opacity-70'>
+          <div style={{visibility: 'hidden'}} className='absolute bottom-2 right-4 text-xs !text-semi-color-text-2 opacity-70'>
             <span>{t('设计与开发由')} </span>
             <a
               href='https://github.com/QuantumNous/new-api'

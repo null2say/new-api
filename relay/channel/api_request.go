@@ -12,6 +12,7 @@ import (
 
 	common2 "github.com/QuantumNous/new-api/common"
 	"github.com/QuantumNous/new-api/logger"
+	"github.com/QuantumNous/new-api/model"
 	"github.com/QuantumNous/new-api/relay/common"
 	"github.com/QuantumNous/new-api/relay/constant"
 	"github.com/QuantumNous/new-api/relay/helper"
@@ -40,7 +41,7 @@ func SetupApiRequestHeader(info *common.RelayInfo, c *gin.Context, req *http.Hea
 
 const clientHeaderPlaceholderPrefix = "{client_header:"
 
-func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey string) (string, bool, error) {
+func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey string, info *common.RelayInfo) (string, bool, error) {
 	trimmed := strings.TrimSpace(template)
 	if strings.HasPrefix(trimmed, clientHeaderPlaceholderPrefix) {
 		afterPrefix := trimmed[len(clientHeaderPlaceholderPrefix):]
@@ -71,6 +72,11 @@ func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey str
 		clientIp := c.ClientIP()
 		template = strings.ReplaceAll(template, "{client_ip}", clientIp)
 	}
+	if strings.Contains(template, "{c_username}") {
+		username, _ := model.GetUsernameById(info.UserId, true)
+		template = strings.ReplaceAll(template, "{c_username}", username)
+	}
+
 	if strings.TrimSpace(template) == "" {
 		return "", false, nil
 	}
@@ -89,7 +95,7 @@ func processHeaderOverride(info *common.RelayInfo, c *gin.Context) (map[string]s
 			return nil, types.NewError(nil, types.ErrorCodeChannelHeaderOverrideInvalid)
 		}
 
-		value, include, err := applyHeaderOverridePlaceholders(str, c, info.ApiKey)
+		value, include, err := applyHeaderOverridePlaceholders(str, c, info.ApiKey, info)
 		if err != nil {
 			return nil, types.NewError(err, types.ErrorCodeChannelHeaderOverrideInvalid)
 		}

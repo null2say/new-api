@@ -67,6 +67,10 @@ func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey str
 	if strings.Contains(template, "{api_key}") {
 		template = strings.ReplaceAll(template, "{api_key}", apiKey)
 	}
+	if strings.Contains(template, "{client_ip}") {
+		clientIp := c.ClientIP()
+		template = strings.ReplaceAll(template, "{client_ip}", clientIp)
+	}
 	if strings.TrimSpace(template) == "" {
 		return "", false, nil
 	}

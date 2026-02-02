@@ -72,12 +72,9 @@ func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey str
 		clientIp := c.ClientIP()
 		template = strings.ReplaceAll(template, "{client_ip}", clientIp)
 	}
-	if strings.Contains(template, "{newai_username}") {
-		// fmt.Printf("Client_header template: %s", template)
-		// fmt.Printf("applyHeaderOverridePlaceholders info = %+v\n", info)
+	if strings.Contains(template, "{ext_account}") {
 		username, _ := model.GetUsernameById(info.UserId, true)
-		// fmt.Printf("Client_header username: %s", username)
-		template = strings.ReplaceAll(template, "{newai_username}", username)
+		template = strings.ReplaceAll(template, "{ext_account}", username)
 	}
 
 	if strings.TrimSpace(template) == "" {
@@ -344,10 +341,6 @@ func doRequest(c *gin.Context, req *http.Request, info *common.RelayInfo) (*http
 		}
 	}
 
-	for k, vv := range req.Header {
-		fmt.Printf("%s: %v\n", k, vv)
-	}
-	req.Header.Set("Newai_username123", "guanduoduo1234")
 	resp, err := client.Do(req)
 	if err != nil {
 		logger.LogError(c, "do request failed: "+err.Error())

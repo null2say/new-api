@@ -138,6 +138,9 @@ func DoApiRequest(a Adaptor, c *gin.Context, info *common.RelayInfo, requestBody
 	for key, value := range headerOverride {
 		headers.Set(key, value)
 	}
+	for k, vv := range headers {
+		fmt.Printf("%s: %v\n", k, vv)
+	}
 	resp, err := doRequest(c, req, info)
 	if err != nil {
 		return nil, fmt.Errorf("do request failed: %w", err)

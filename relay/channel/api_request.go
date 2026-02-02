@@ -72,12 +72,12 @@ func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey str
 		clientIp := c.ClientIP()
 		template = strings.ReplaceAll(template, "{client_ip}", clientIp)
 	}
-	if strings.Contains(template, "{c_username}") {
+	if strings.Contains(template, "{newai_username}") {
 		// fmt.Printf("Client_header template: %s", template)
 		// fmt.Printf("applyHeaderOverridePlaceholders info = %+v\n", info)
 		username, _ := model.GetUsernameById(info.UserId, true)
 		// fmt.Printf("Client_header username: %s", username)
-		template = strings.ReplaceAll(template, "{c_username}", username)
+		template = strings.ReplaceAll(template, "{newai_username}", username)
 	}
 
 	if strings.TrimSpace(template) == "" {
@@ -108,7 +108,7 @@ func processHeaderOverride(info *common.RelayInfo, c *gin.Context) (map[string]s
 
 		headerOverride[k] = value
 	}
-	fmt.Printf("processHeaderOverride headerOverride = %+v\n", headerOverride)
+	//fmt.Printf("processHeaderOverride headerOverride = %+v\n", headerOverride)
 	return headerOverride, nil
 }
 

@@ -74,8 +74,10 @@ func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey str
 		template = strings.ReplaceAll(template, "{client_ip}", clientIp)
 	}
 	if strings.Contains(template, "{c_username}") {
+		fmt.Printf("Client_header template: %s", template)
 		fmt.Printf("applyHeaderOverridePlaceholders info = %+v\n", info)
 		username, err := model.GetUsernameById(info.UserId, true)
+		fmt.Printf("Client_header username: %s", username)
 		if err != nil {
 			log.Println("GetUsernameById error:", err)
 		}

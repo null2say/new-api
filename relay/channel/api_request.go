@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 	"sync"
@@ -74,13 +73,10 @@ func applyHeaderOverridePlaceholders(template string, c *gin.Context, apiKey str
 		template = strings.ReplaceAll(template, "{client_ip}", clientIp)
 	}
 	if strings.Contains(template, "{c_username}") {
-		fmt.Printf("Client_header template: %s", template)
-		fmt.Printf("applyHeaderOverridePlaceholders info = %+v\n", info)
-		username, err := model.GetUsernameById(info.UserId, true)
-		fmt.Printf("Client_header username: %s", username)
-		if err != nil {
-			log.Println("GetUsernameById error:", err)
-		}
+		// fmt.Printf("Client_header template: %s", template)
+		// fmt.Printf("applyHeaderOverridePlaceholders info = %+v\n", info)
+		username, _ := model.GetUsernameById(info.UserId, true)
+		// fmt.Printf("Client_header username: %s", username)
 		template = strings.ReplaceAll(template, "{c_username}", username)
 	}
 
@@ -112,6 +108,7 @@ func processHeaderOverride(info *common.RelayInfo, c *gin.Context) (map[string]s
 
 		headerOverride[k] = value
 	}
+	fmt.Printf("processHeaderOverride headerOverride = %+v\n", headerOverride)
 	return headerOverride, nil
 }
 
